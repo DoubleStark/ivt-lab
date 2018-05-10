@@ -9,16 +9,20 @@ import org.junit.Test;
 public class GT4500Test {
 
   private GT4500 ship;
+  TorpedoStore primary = mock(TorpedoStore.class);
+  TorpedoStore secondary = mock(TorpedoStore.class);
 
   @Before
   public void init(){
-    this.ship = new GT4500();
+    this.ship = new GT4500(primary, secondary);
   }
 
   @Test
   public void fireTorpedo_Single_Success(){
     // Arrange
-
+	 when(primary.isEmpty()).thenReturn(false);
+	 when(primary.fire(1)).thenReturn(true);
+	 
     // Act
     boolean result = ship.fireTorpedo(FiringMode.SINGLE);
 
@@ -36,5 +40,19 @@ public class GT4500Test {
     // Assert
     assertEquals(true, result);
   }
+ 
+  @Test
+  public void fireTorpedo_Twice_Success(){
+	  //Arrange	  
+	  ship.fireLaser(FiringMode.SINGLE);
+	  
+	  //Act
+	  boolean result = ship.fireTorpedo(FiringMode.SINGLE);
+	  
+	  // Assert
+	  assertEquals(true, result);
+  }
 
+  
+  
 }
